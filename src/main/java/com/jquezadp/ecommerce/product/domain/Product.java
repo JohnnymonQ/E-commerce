@@ -1,6 +1,7 @@
 package com.jquezadp.ecommerce.product.domain;
 
 import com.jquezadp.ecommerce.product.ProductCategory;
+import com.jquezadp.ecommerce.shared.BaseModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,18 +20,17 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
 @Entity
 @Table(name = "products")
+@SQLRestriction("deleted = false")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product {
+public class Product extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,9 +41,10 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
+    // Uniqueness among active products is enforced by the uk_products_active_sku index (see V2 migration).
     @NotBlank
     @Size(max = 64)
-    @Column(nullable = false, unique = true, length = 64)
+    @Column(nullable = false, length = 64)
     private String sku;
 
     @Column(columnDefinition = "TEXT")
@@ -73,14 +74,6 @@ public class Product {
     @Version
     @Column(nullable = false)
     private Long version;
-
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Instant createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
 
     public Product(String name, String sku, String description, ProductCategory category,
                    BigDecimal price, Integer stock, BigDecimal weightKg) {

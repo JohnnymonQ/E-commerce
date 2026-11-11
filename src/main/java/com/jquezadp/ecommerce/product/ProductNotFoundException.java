@@ -1,6 +1,8 @@
 package com.jquezadp.ecommerce.product;
 
-public class ProductNotFoundException extends RuntimeException {
+import com.jquezadp.ecommerce.shared.ResourceNotFoundException;
+
+public class ProductNotFoundException extends ResourceNotFoundException {
 
     public ProductNotFoundException(Long id) {
         super("Product not found with id " + id);

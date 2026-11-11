@@ -57,7 +57,7 @@ public class ProductService {
 
     @Transactional
     public void delete(Long id) {
-        productRepository.delete(getOrThrow(id));
+        getOrThrow(id).markDeleted();
     }
 
     private Product getOrThrow(Long id) {

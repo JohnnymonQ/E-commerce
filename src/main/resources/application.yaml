@@ -11,3 +11,7 @@ spring:
     hibernate:
       ddl-auto: validate # Flyway owns the schema
     open-in-view: false
+  data:
+    web:
+      pageable:
+        max-page-size: 100
