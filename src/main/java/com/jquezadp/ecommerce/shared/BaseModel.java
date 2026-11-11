@@ -8,9 +8,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 
-/**
- * Common audit and soft-delete attributes for persistent entities.
- */
 @MappedSuperclass
 @Getter
 public abstract class BaseModel {

@@ -2,43 +2,22 @@ package com.jquezadp.ecommerce.product.service;
 
 import com.jquezadp.ecommerce.product.ProductDto;
 import com.jquezadp.ecommerce.product.domain.Product;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
-@Component
-class ProductMapper {
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.ERROR)
+interface ProductMapper {
 
-    ProductDto toDto(Product product) {
-        return new ProductDto(
-                product.getId(),
-                product.getName(),
-                product.getSku(),
-                product.getDescription(),
-                product.getCategory(),
-                product.getPrice(),
-                product.getStock(),
-                product.getWeightKg(),
-                product.getCreatedAt(),
-                product.getUpdatedAt());
-    }
+    ProductDto toDto(Product product);
 
-    Product toEntity(ProductCommand command) {
-        return new Product(
-                command.name(),
-                command.sku(),
-                command.description(),
-                command.category(),
-                command.price(),
-                command.stock(),
-                command.weightKg());
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    Product toEntity(ProductCommand command);
 
-    void update(Product product, ProductCommand command) {
-        product.setName(command.name());
-        product.setSku(command.sku());
-        product.setDescription(command.description());
-        product.setCategory(command.category());
-        product.setPrice(command.price());
-        product.setStock(command.stock());
-        product.setWeightKg(command.weightKg());
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    void update(@MappingTarget Product product, ProductCommand command);
 }

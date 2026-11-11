@@ -41,7 +41,6 @@ public class Product extends BaseModel {
     @Column(nullable = false)
     private String name;
 
-    // Uniqueness among active products is enforced by the uk_products_active_sku index (see V2 migration).
     @NotBlank
     @Size(max = 64)
     @Column(nullable = false, length = 64)

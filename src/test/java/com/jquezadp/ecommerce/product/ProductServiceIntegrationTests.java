@@ -36,7 +36,6 @@ class ProductServiceIntegrationTests {
 
     @BeforeEach
     void cleanDatabase() {
-        // deleteAll() would skip soft-deleted rows, so clean the table directly
         jdbcTemplate.update("DELETE FROM products");
     }
 

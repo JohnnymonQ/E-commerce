@@ -9,9 +9,6 @@ import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
-/**
- * Validated input for creating or fully replacing a product.
- */
 public record ProductCommand(
         @NotBlank @Size(max = 255) String name,
         @NotBlank @Size(max = 64) String sku,
