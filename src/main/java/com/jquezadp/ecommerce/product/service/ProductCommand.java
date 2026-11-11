@@ -1,6 +1,7 @@
 package com.jquezadp.ecommerce.product.service;
 
 import com.jquezadp.ecommerce.product.ProductCategory;
+import com.jquezadp.ecommerce.shared.NoHtml;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,9 +11,9 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
 public record ProductCommand(
-        @NotBlank @Size(max = 255) String name,
+        @NotBlank @Size(max = 255) @NoHtml String name,
         @NotBlank @Size(max = 64) String sku,
-        String description,
+        @NoHtml String description,
         @NotNull ProductCategory category,
         @NotNull @PositiveOrZero @Digits(integer = 10, fraction = 2) BigDecimal price,
         @NotNull @PositiveOrZero Integer stock,

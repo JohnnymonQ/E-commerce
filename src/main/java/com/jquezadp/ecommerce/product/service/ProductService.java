@@ -5,13 +5,18 @@ import com.jquezadp.ecommerce.product.ProductDto;
 import com.jquezadp.ecommerce.product.ProductNotFoundException;
 import com.jquezadp.ecommerce.product.domain.Product;
 import com.jquezadp.ecommerce.product.repository.ProductRepository;
+import com.jquezadp.ecommerce.shared.importing.CsvImportService;
+import com.jquezadp.ecommerce.shared.importing.ImportReport;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
+import java.io.InputStream;
 
 @Service
 @Validated
@@ -21,6 +26,13 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final ProductCsvImporter productCsvImporter;
+    private final CsvImportService csvImportService;
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public ImportReport importCsv(InputStream csv) {
+        return csvImportService.importCsv(csv, productCsvImporter);
+    }
 
     @Transactional
     public ProductDto create(@Valid ProductCommand command) {

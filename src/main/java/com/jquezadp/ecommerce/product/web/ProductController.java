@@ -3,11 +3,16 @@ package com.jquezadp.ecommerce.product.web;
 import com.jquezadp.ecommerce.product.ProductDto;
 import com.jquezadp.ecommerce.product.service.ProductCommand;
 import com.jquezadp.ecommerce.product.service.ProductService;
+import com.jquezadp.ecommerce.shared.importing.ImportReport;
+import com.jquezadp.ecommerce.shared.importing.InvalidImportFileException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping("/api/products")
@@ -44,6 +52,16 @@ public class ProductController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto create(@Valid @RequestBody ProductCommand command) {
         return productService.create(command);
+    }
+
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ImportReport importCsv(@RequestParam("file") MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new InvalidImportFileException("The uploaded file is empty");
+        }
+        try (InputStream input = file.getInputStream()) {
+            return productService.importCsv(input);
+        }
     }
 
     @PutMapping("/{id}")

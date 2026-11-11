@@ -2,6 +2,7 @@ package com.jquezadp.ecommerce.product.domain;
 
 import com.jquezadp.ecommerce.product.ProductCategory;
 import com.jquezadp.ecommerce.shared.BaseModel;
+import com.jquezadp.ecommerce.shared.NoHtml;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -38,6 +39,7 @@ public class Product extends BaseModel {
 
     @NotBlank
     @Size(max = 255)
+    @NoHtml
     @Column(nullable = false)
     private String name;
 
@@ -46,6 +48,7 @@ public class Product extends BaseModel {
     @Column(nullable = false, length = 64)
     private String sku;
 
+    @NoHtml
     @Column(columnDefinition = "TEXT")
     private String description;
 

@@ -15,12 +15,17 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import com.jquezadp.ecommerce.shared.importing.ImportReport;
+import com.jquezadp.ecommerce.shared.importing.RowError;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -119,6 +124,27 @@ class ProductControllerTests {
                 .bodyJson()
                 .hasPathSatisfying("$.content.length()", path -> path.assertThat().isEqualTo(2))
                 .hasPathSatisfying("$.page.totalElements", path -> path.assertThat().isEqualTo(2));
+    }
+
+    @Test
+    void importReturnsReport() {
+        when(productService.importCsv(any(InputStream.class)))
+                .thenReturn(new ImportReport(3, 2, 0, 1, List.of(new RowError(4, Map.of("price", "must be a number")))));
+        MockMultipartFile file = new MockMultipartFile("file", "products.csv", "text/csv", "a,b\n1,2\n".getBytes());
+
+        assertThat(mvc.post().uri("/api/products/import").multipart().file(file))
+                .hasStatusOk()
+                .bodyJson()
+                .hasPathSatisfying("$.created", path -> path.assertThat().isEqualTo(2))
+                .hasPathSatisfying("$.errors[0].line", path -> path.assertThat().isEqualTo(4));
+    }
+
+    @Test
+    void importReturns400ForEmptyFile() {
+        MockMultipartFile file = new MockMultipartFile("file", "products.csv", "text/csv", new byte[0]);
+
+        assertThat(mvc.post().uri("/api/products/import").multipart().file(file))
+                .hasStatus(HttpStatus.BAD_REQUEST);
     }
 
     private static ProductDto dto(Long id) {

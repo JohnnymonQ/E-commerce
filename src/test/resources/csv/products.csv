@@ -1,0 +1,19 @@
+name,sku,description,category,price,stock,weight_kg
+Running Shoes,RS-001,Lightweight running shoes,Footwear,89.99,150,0.35
+"Comma, In Product Name",CI-001,"Has a comma, and ""quotes""",Accessories,14.99,300,0.1
+Wireless Mouse,WM-042,Ergonomic mouse,Electronics,$29.99,75,0.12
+Organic Coffee,CB-010,Single origin,Food & Beverage,18.75,500,1.0
+Desk,SD-004,Electric desk,Home & Office,449.99,15,
+Mystery Box,MB-001,Surprise,Misc,0.00,50,1.0
+"Robert'); DROP TABLE products;--",SQL-001,Classic injection,Games,9.99,50,0.5
+Yoga Mat,YM-015,Premium mat,Sports,free,200,1.2
+Desk Lamp,DL-007,Adjustable lamp,Home & Office,45.50,-5,2.1
+<script>alert('xss')</script>,XS-001,Normal description,Electronics,19.99,100,0.1
+,HD-099,Headphones,Electronics,149.99,30,0.25
+     ,WS-001,Whitespace name,Misc,5.00,10,0.1
+Gift Card,GC-025,Digital card,,25.00,99999,0
+Spaceship,SP-001,Unknown category,Spaceships,10.00,1,1
+,,,,,,
+Running Shoes,RS-001,Duplicate in file,Footwear,94.99,120,0.35
+Existing Product,EX-001,Already in database,Books,10.00,5,0.2
+Reborn Product,RE-001,Sku of a deleted product,Books,10.00,5,0.2

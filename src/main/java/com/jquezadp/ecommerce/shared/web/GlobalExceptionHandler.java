@@ -2,6 +2,7 @@ package com.jquezadp.ecommerce.shared.web;
 
 import com.jquezadp.ecommerce.shared.ResourceConflictException;
 import com.jquezadp.ecommerce.shared.ResourceNotFoundException;
+import com.jquezadp.ecommerce.shared.importing.InvalidImportFileException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -51,6 +52,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceConflictException.class)
     ProblemDetail handleConflict(ResourceConflictException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidImportFileException.class)
+    ProblemDetail handleInvalidImportFile(InvalidImportFileException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
