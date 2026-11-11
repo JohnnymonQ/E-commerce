@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: ecommerce
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate # Flyway owns the schema
+    open-in-view: false
