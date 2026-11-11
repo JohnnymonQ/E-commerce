@@ -2,6 +2,18 @@
 
 Spring Boot 4 / Java 21 backend for an e-commerce platform.
 
+## Running with Docker
+
+Copy `.env.example` to `.env` and set `DB_USERNAME` (not `root`) and `DB_PASSWORD`, then:
+
+```
+docker compose up --build
+```
+
+The API is available at `http://localhost:8080` and the health check at `/actuator/health`. To build only the image: `docker build -t ecommerce .`
+
+The Dockerfile is multi-stage: Maven and the JDK stay in the build stage, and the final image has only the JRE (Alpine), the Spring Boot layered jar (dependencies in their own cached layer) and a non-root user.
+
 ## Design decisions
 
 ### SQL (MySQL) instead of NoSQL
